@@ -1,21 +1,25 @@
-const mqtt = require("mqtt");
-const protocol = "ws";
-const host = "broker.emqx.io";
-const port = "8083";
-const path = "/mqtt";
-const clientId = `mqtt_${Math.random().toString(16).slice(3)}`;
+const express = require("express");
+const app = express();
+const mongoose = require('mongoose')
+const connectionString = process.env.DB_CONNECTION_URL;
+const cors = require("cors");
 
-const connectUrl = `${protocol}://${host}:${port}${path}`;
 
-const client = mqtt.connect(connectUrl, {
-  clientId,
-  clean: true,
-  connectTimeout: 4000,
-  username: "emqx",
-  password: "public",
-  reconnectPeriod: 1000,
+
+app.use(express.json()); // Parse JSON bodies
+app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
+
+app.use(cors()); // for cross origin requests
+require("./startup/routes")(app);
+
+mongoose
+  .connect(connectionString || "mongodb://127.0.0.1:27017/chat-playground")
+  .then(() => {console.log('connected to db successfully')})
+  .catch((error) => {console.log('error connecting to db')});
+
+
+app.listen(3000, () => {
+  console.log("Listening on port 3000");
 });
 
-client.on("connect", () => {
-  console.log("Connected");
-});
+
