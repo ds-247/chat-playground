@@ -4,6 +4,7 @@ import Home from "./components/Home/Home";
 import Users from "./components/User/Users";
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
+import ChatWindow from './components/Chat Window/ChatWindow';
 
 function App() {
   return (

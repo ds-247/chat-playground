@@ -9,7 +9,7 @@ const cors = require("cors");
 app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
-app.use(cors()); // for cross origin requests
+app.use(cors()); // for cross origin requests 
 require("./startup/routes")(app);
 
 mongoose

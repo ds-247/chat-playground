@@ -1,4 +1,4 @@
-import http from "./httpService";
+import http from "./httpServices";
 // import jwtDecode from "jwt-decode";
 const apiEndPoint = "http://localhost:3000/users/register";
 
