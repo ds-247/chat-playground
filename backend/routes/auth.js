@@ -14,18 +14,25 @@ router.post("/", async (req, res) => {
   const inputPassword = req.body.password;
   const storedHashedPassword = user.password;
 
-//   checkPassword(inputPassword, storedHashedPassword)
-//     .then((isMatch) => {
-//       if (isMatch) {
-//         const token = user.generateAuthToken();
-//         res.send({ token });
-//       } else {
-//         return res.status(400).send("Invalid user name or password...");
-//       }
-//     })
-//     .catch((error) => {
-//       logger.error("Error checking password:", error);
-//     });
+  if (inputPassword === storedHashedPassword) {
+    const token = user.generateAuthToken();
+    res.send({ token });
+  } else {
+    return res.status(400).send("Invalid user name or password...");
+  }
+
+  // checkPassword(inputPassword, storedHashedPassword)
+  //   .then((isMatch) => {
+  //     if (isMatch) {
+  //       const token = user.generateAuthToken();
+  //       res.send({ token });
+  //     } else {
+  //       return res.status(400).send("Invalid user name or password...");
+  //     }
+  //   })
+  //   .catch((error) => {
+  //     console.log("Error checking password:", error);
+  //   });
 });
 
 async function validateUser(user) {

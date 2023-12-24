@@ -44,11 +44,11 @@ const Login = () => {
 
     // Implement your login logic here
     try {
-      const res = await login(formData);
+      const res = await login(formData.username, formData.password);
       console.log(res);
       console.log("Logged in :", formData);
     } catch (error) {
-      console.log("error while registering the user")
+      console.log("error while logging in the user")
     }
   };
 
@@ -100,16 +100,16 @@ const Login = () => {
         </div>
 
         <div className="form-button-group">
+          <button type="button" onClick={handleLogin} className="login-button">
+            Login
+          </button>
+
           <button
             type="button"
             onClick={handleRegister}
             className="register-button"
           >
             Register
-          </button>
-          
-          <button type="button" onClick={handleLogin} className="login-button">
-            Login
           </button>
         </div>
       </form>

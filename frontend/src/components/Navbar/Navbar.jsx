@@ -7,27 +7,29 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
+// import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
+// import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import { NavLink } from "react-router-dom";
-
-const pages = [
-  { label: "Home", to: "/" },
-  { label: "Participants", to: "/users"},
-//   { label: "Orders", to: "/orders", condition: user },
-  // { label: "Login", to: "/login", condition: !user },
-  { label: "Login", to: "/login"},
-  { label: "Register", to: "/register"},
-//   { label: "Register", to: "/register", condition: !user },
-];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+import auth from "../../services/authService";
+import UserOptions from "./UserOptions";
 
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  // const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const user = auth.getCurrentUser();
+
+
+
+  const pages = [
+    { label: "Home", to: "/" },
+    { label: "Participants", to: "/users" },
+    { label: "Login", to: "/login", condition: !user },
+    { label: "Register", to: "/register", condition: !user },
+  ];
+
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -66,7 +68,6 @@ function Navbar() {
           >
             ChattX
           </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -96,21 +97,23 @@ function Navbar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page, index) => (
+              {pages.map((link, index) => 
+              link?.condition === undefined || link.condition ? (
                 <NavLink
                   key={`nav-link-${index}`}
                   className="nav-page"
                   aria-current="page"
-                  to={page.to}
+                  to={link.to}
                 >
                   <MenuItem
                     key={`menu-item-${index}`}
                     onClick={handleCloseNavMenu}
                   >
-                    <Typography textAlign="center">{page.label}</Typography>
+                    <Typography textAlign="center">{link.label}</Typography>
                   </MenuItem>
                 </NavLink>
-              ))}
+                ) : null
+              )}
             </Menu>
           </Box>
           <TelegramIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
@@ -133,11 +136,8 @@ function Navbar() {
             ChattX
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((link, index) => {
-              {
-                /* link?.condition === undefined || link.condition ? ( */
-              }
-              return (
+            {pages.map((link, index) =>
+              link?.condition === undefined || link.condition ? (
                 <NavLink
                   key={index}
                   className="nav-link"
@@ -151,40 +151,10 @@ function Navbar() {
                     {link.label}
                   </Button>
                 </NavLink>
-              );
-            })}
+              ) : null
+            )}
           </Box>
-          {/* ) : null */}
-
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+          {user && <UserOptions user={user} />}
         </Toolbar>
       </Container>
     </AppBar>

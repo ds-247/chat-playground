@@ -1,8 +1,8 @@
 import http from "./httpServices";
-// import jwtDecode from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 const apiEndPoint = "http://localhost:3000/users/register";
 
-// http.setJwt(getJwt());
+http.setJwt(getJwt());
 
 export async function login(username, password) {
   try {
@@ -11,10 +11,10 @@ export async function login(username, password) {
       username: username,
     });
 
-    // const jwt = response.data;
-    // loginWithJwt(jwt.token);
+    const jwt = response.data;
+    loginWithJwt(jwt.token);
 
-    // return jwt.token;
+    return jwt.token;
   } catch (error) {
     throw error;
   }

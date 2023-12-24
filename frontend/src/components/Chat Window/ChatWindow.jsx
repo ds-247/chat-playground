@@ -1,25 +1,26 @@
-// ChatWindow.js
-
 import React, { useState, useRef, useEffect } from "react";
+import {chatRoom} from "../../services/chatService"
 import "./chatWindow.css";
 
-const ChatWindow = ({ onCloseChat }) => {
+const ChatWindow = ({ onCloseChat , user }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [isChatOpen, setIsChatOpen] = useState(true);
 
   const messagesEndRef = useRef(null);
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (newMessage.trim() === "") return;
 
-    setMessages([...messages, { text: newMessage, sender: "user" }]);
+    const newMessageObject = { text: newMessage, sender: user.username };
+
+    // Update state using a callback function to avoid potential race conditions
+    setMessages((prevMessages) => [...prevMessages, newMessageObject]);
+
+    const res = await chatRoom(newMessage, user);
+    console.log(res);
     setNewMessage("");
   };
 
-  // const handleCloseChat = () => {
-  //   setIsChatOpen(false);
-  // };
 
   useEffect(() => {
     // Scroll to the bottom when a new message is added
@@ -28,12 +29,12 @@ const ChatWindow = ({ onCloseChat }) => {
     }
   }, [messages]);
 
-  return isChatOpen ? (
+  return  (
     <div className="chat-window">
       <button className="close-button" onClick={onCloseChat}>
         &times;
       </button>
-      <div className="chat-header">Vibrant Chat</div>
+      <div className="chat-header">{user.username}</div>
       <div className="chat-messages">
         {messages.map((message, index) => (
           <div key={index} className={`message ${message.sender}`}>
@@ -51,8 +52,7 @@ const ChatWindow = ({ onCloseChat }) => {
         />
         <button onClick={handleSendMessage}>Send</button>
       </div>
-    </div>
-  ) : null;
+    </div>)
 };
 
 export default ChatWindow;

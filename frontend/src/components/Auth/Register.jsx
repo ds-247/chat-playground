@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Joi from "joi-browser";
 import { register } from "../../services/userService";
+import auth from "../../services/authService";
 import "./login.css";
 
 const Register = () => {
@@ -57,12 +58,15 @@ const Register = () => {
     // Implement your register logic here
     try {
       const res = await register(formData);
+      if (res.status.toString() === "200") {
+        auth.loginWithJwt(res.headers["x-auth-token"]);
+        window.location = "/"
+      }
       console.log(res);
       console.log("Register:", formData);
     } catch (error) {
-      console.log("error while registering the user")
+      console.log("error while registering the user");
     }
-    
   };
 
   return (
