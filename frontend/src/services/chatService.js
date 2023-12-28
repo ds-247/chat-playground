@@ -12,11 +12,3 @@ export async function startChatServer(user) {
 export async function exitChatRoom(){
   return http.get(`${apiEndPoint}/chatRoom/close`);
 }
-
-export async function chatRoom(message, receiverId){
-  const data = {
-    message  : message,
-    receiverId : receiverId._id
-  }
-  return http .post(`${apiEndPoint}/chatRoom`,data)
-}

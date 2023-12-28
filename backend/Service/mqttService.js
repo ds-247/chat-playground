@@ -22,10 +22,16 @@ class MQTTService {
     });
 
     // Call the message callback function when message arrived
-    this.mqttClient.on("message", function (topic, message) {
-      console.log(message.toString());
-      if (this.messageCallback) this.messageCallback(topic, message);
-    });
+    // this.mqttClient.on("message", function (topic, message) {
+    //   console.log(message.toString());
+    //   if (this.messageCallback) this.messageCallback(topic, message);
+    // });
+
+     this.mqttClient.on("message", (topic, message) => {
+       console.log(message.toString());
+       // Call the external messageCallback function when message arrived
+       if (this.messageCallback) this.messageCallback(topic, message);
+     });
 
     this.mqttClient.on("close", () => {
       console.log(`MQTT client disconnected`);
@@ -38,8 +44,12 @@ class MQTTService {
   }
 
   // Subscribe to MQTT Message
-  subscribe(topic, options) {
-    this.mqttClient.subscribe(topic, options);
+  // subscribe(topic, message) {
+  //   this.mqttClient.subscribe(topic, message);
+  // }
+
+  subscribe(topic) {
+    this.mqttClient.subscribe(topic);
   }
 }
 

@@ -26,26 +26,32 @@
 
 .chat-messages {
   flex-grow: 1; /* Grow to fill available space */
+  height: 200px; /* Set your desired height */
   padding: 10px;
   overflow-y: auto;
 }
+
 
 .message {
   padding: 8px;
   margin: 8px;
   border-radius: 8px;
   word-wrap: break-word;
+  max-width: 70%; /* Adjust the maximum width as needed */
 }
 
 .message.user {
-  background-color: #2196f3;
+  background-color: yellowgreen;
   color: white;
   text-align: right;
+  margin-left: auto;
 }
 
 .message.bot {
   background-color: #03a9f4;
   color: white;
+  text-align: left;
+  margin-right: auto;
 }
 
 .chat-input {

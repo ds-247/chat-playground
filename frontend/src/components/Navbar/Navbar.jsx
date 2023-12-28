@@ -25,7 +25,7 @@ function Navbar() {
 
   const pages = [
     { label: "Home", to: "/" },
-    { label: "Participants", to: "/users" },
+    { label: "Participants", to: "/users", condition:user },
     { label: "Login", to: "/login", condition: !user },
     { label: "Register", to: "/register", condition: !user },
   ];

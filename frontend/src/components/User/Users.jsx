@@ -10,48 +10,71 @@ import Button from "@mui/material/Button";
 import { getUsers } from "../../services/userService";
 import ChatWindow from "./../Chat Window/ChatWindow";
 import { startChatServer, exitChatRoom } from "../../services/chatService";
+import {
+  startConnection,
+  endConnection,
+  subscribeToTopic,
+} from "../../services/mqttService"
 import "./user.css";
 
 export default function Users() {
   const [userData, setUserData] = useState([]);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  // const mqttService = null;
   // const [chatTitle, setChatTitle] = useState("");
 
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { data } = await getUsers();
-
-      
+        
         setUserData(data || []);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-
+    
     fetchData();
   }, []);
-
+  
   const handleChatButtonClick = async (user) => {
-    
-
     try {
-      const res = await startChatServer(user);
-      console.log(res);
+      // Send a request to the server to check permission
+      const response = await startChatServer(user);
+      startConnection();
       setSelectedUser(user);
-      setIsChatOpen(true);
+      if (response.status === 200) {
+        setIsChatOpen(true);
+        // Permission granted, connect to MQTT
+        subscribeToTopic("melo", (topic, message) => {
+          console.log(
+            `Received message -> ${message.toString()}, topic is -> ${topic}`
+          );
+          // Handle the incoming message as needed in your app
+        });
+      } else {
+        console.error("Permission denied");
+      }
     } catch (error) {
-      console.log("something went wrong while starting chat window") 
+      console.error("Error checking permission:", error);
     }
   };
 
-  const handleCloseChat = async  () => {
+  const handleCloseChat = async () => {
     try {
-      await exitChatRoom();
-      setIsChatOpen(false);
+      // Send a request to the server to disconnect
+      const response = await exitChatRoom();
+      if (response.status === 200) {
+        // Disconnected, clean up MQTT connections
+        setIsChatOpen(false);
+        endConnection();
+      } else {
+        console.error("Disconnection failed");
+      }
     } catch (error) {
-      console.log("error while closing chat window")
+      console.error("Error disconnecting:", error);
     }
   };
 
