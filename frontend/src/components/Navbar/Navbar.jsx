@@ -7,43 +7,31 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-// import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-// import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import { NavLink } from "react-router-dom";
 import auth from "../../services/authService";
 import UserOptions from "./UserOptions";
+import "./navbar.css";
 
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  // const [anchorElUser, setAnchorElUser] = React.useState(null);
   const user = auth.getCurrentUser();
-
-
 
   const pages = [
     { label: "Home", to: "/" },
-    { label: "Participants", to: "/users", condition:user },
+    { label: "Participants", to: "/users", condition: user },
     { label: "Login", to: "/login", condition: !user },
     { label: "Register", to: "/register", condition: !user },
   ];
 
-
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
   };
 
   return (
@@ -66,7 +54,7 @@ function Navbar() {
               textDecoration: "none",
             }}
           >
-            ChattX
+            ChatQt
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -97,21 +85,21 @@ function Navbar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((link, index) => 
-              link?.condition === undefined || link.condition ? (
-                <NavLink
-                  key={`nav-link-${index}`}
-                  className="nav-page"
-                  aria-current="page"
-                  to={link.to}
-                >
-                  <MenuItem
-                    key={`menu-item-${index}`}
-                    onClick={handleCloseNavMenu}
+              {pages.map((link, index) =>
+                link?.condition === undefined || link.condition ? (
+                  <NavLink
+                    key={`nav-link-${index}`}
+                    className="nav-page"
+                    aria-current="page"
+                    to={link.to}
                   >
-                    <Typography textAlign="center">{link.label}</Typography>
-                  </MenuItem>
-                </NavLink>
+                    <MenuItem
+                      key={`menu-item-${index}`}
+                      onClick={handleCloseNavMenu}
+                    >
+                      <Typography textAlign="center">{link.label}</Typography>
+                    </MenuItem>
+                  </NavLink>
                 ) : null
               )}
             </Menu>
@@ -133,7 +121,7 @@ function Navbar() {
               textDecoration: "none",
             }}
           >
-            ChattX
+            ChatQt
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((link, index) =>

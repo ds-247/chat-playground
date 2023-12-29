@@ -1,11 +1,9 @@
-/* StylishForm.css */
-
 .form-container {
   max-width: 400px;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #ccc;
+  margin: 15px auto;
+  padding: 8px 25px;
   border-radius: 8px;
+  background-color: #242424c7;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -16,17 +14,20 @@
 
 .form-group {
   margin-bottom: 15px;
+  display: flex;
+  flex-direction: column; /* Align items in a column */
 }
 
 .form-label {
-  display: block;
+  display: inline-block; /* Display labels inline */
   margin-bottom: 5px;
 }
 
 .form-input-field {
-  width: 94%;
+  width: 100%; /* Take full width of the container */
   padding: 8px;
   border-radius: 4px;
+  box-sizing: border-box; /* Include padding and border in width calculation */
 }
 
 .form-button-group {
@@ -40,21 +41,22 @@
   text-shadow: 1px 1px 11px red;
 }
 
-.register-button{
+.register-button {
   background: #008cba;
 }
 
-.login-button{
+.login-button {
   background: #4caf50;
 }
 
 .login-button,
 .register-button {
   color: white;
-  width: 50%; /* Make buttons take full width */
-  padding: 10px; /* Adjust padding for smaller screens */
+  width: 43%;
+  padding: 10px;
   border-radius: 4px;
   cursor: pointer;
+  margin: 8px;
 }
 
 @media screen and (min-width: 600px) {

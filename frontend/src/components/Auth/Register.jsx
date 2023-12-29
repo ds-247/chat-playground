@@ -1,4 +1,3 @@
-// StylishForm.js
 import React, { useState } from "react";
 import Joi from "joi-browser";
 import { register } from "../../services/userService";
@@ -42,12 +41,7 @@ const Register = () => {
   };
 
   const handleLogin = () => {
-    const errors = validate();
-    setValidationErrors(errors || {});
-    if (errors) return;
-
-    // Implement your login logic here
-    console.log("Login:", formData);
+    window.location = "/login";
   };
 
   const handleRegister = async () => {
@@ -55,7 +49,6 @@ const Register = () => {
     setValidationErrors(errors || {});
     if (errors) return;
 
-    // Implement your register logic here
     try {
       const res = await register(formData);
       if (res.status.toString() === "200") {

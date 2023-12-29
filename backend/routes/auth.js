@@ -37,17 +37,12 @@ router.post("/", async (req, res) => {
 
 async function validateUser(user) {
   const schema = Joi.object({
-    usesrname: Joi.string()
-      .required()
-      .message("username must be  unique"),
-    password: Joi.string()
-      .required()
-      .min(5)
-      .message("password must be atleast 5 characters"),
+    username: Joi.string().required().label("Username"),
+    password: Joi.string().required().min(5).label("Password"),
   });
 
   try {
-    await schema.validateAsync(user);
+    await schema.validateAsync(user, { abortEarly: false });
   } catch (err) {
     return err;
   }

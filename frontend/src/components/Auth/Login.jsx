@@ -44,21 +44,15 @@ const Login = () => {
 
     // Implement your login logic here
     try {
-      const res = await login(formData.username, formData.password);
-      console.log(res);
-      console.log("Logged in :", formData);
+      await login(formData.username, formData.password);
+      window.location = '/';
     } catch (error) {
       console.log("error while logging in the user")
     }
   };
 
   const handleRegister = () => {
-    const errors = validate();
-    setValidationErrors(errors || {});
-    if (errors) return;
-
-    // Implement your register logic here
-    console.log('Register:', formData);
+    window.location = "/register";
   };
 
   return (

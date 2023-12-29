@@ -1,0 +1,58 @@
+/* home.css */
+.home-blur-container {
+  background-image: url(/src/assets/2942035.jpg);
+  background-size: contain;
+  background-position: center;
+  height: 100vh;
+  position: relative;
+  background-color: white;
+  background-repeat: no-repeat;
+}
+
+.home-container {
+  height: 90vh;
+}
+
+.home-button-container {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.home-chat-button {
+  background: linear-gradient(to right, #3498db, #6bb9f0);
+  color: #fff;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  outline: none;
+  position: relative;
+  z-index: 1;
+}
+
+.home-chat-button:before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  z-index: -1;
+  border-radius: 10px;
+  background: linear-gradient(to right, #3498db, #6bb9f0);
+  filter: blur(10px);
+}
+
+.home-chat-button:hover {
+  background: linear-gradient(to right, #2980b9, #5497c2);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.8),
+    0 0 40px rgba(255, 255, 255, 0.6), 0 0 60px rgba(255, 255, 255, 0.4);
+}
+
+.home-chat-button:active {
+  transform: scale(0.95);
+}

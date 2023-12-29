@@ -1,0 +1,18 @@
+.css-m5x0z-MuiTypography-root,
+.css-1lfs2tq-MuiTypography-root {
+  font-size: 28px !important;
+  font-family: "McLaren" !important;
+}
+
+.nav-link button {
+  font-family: "McLaren";
+}
+
+.nav-link button:hover {
+  background-color: #0c79e6;
+  border-radius: 11px;
+}
+
+.css-z7gwoq-MuiPaper-root-MuiAppBar-root {
+  margin: 0 !important;
+}

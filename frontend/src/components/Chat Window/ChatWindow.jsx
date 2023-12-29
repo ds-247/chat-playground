@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
-import mqtt from "mqtt"
+import { exitChatRoom } from "../../services/chatService";
+import TelegramIcon from "@mui/icons-material/Telegram";
+import mqtt from "mqtt";
 import "./chatWindow.css";
 
-const ChatWindow = ({ onCloseChat, user }) => {
+const ChatWindow = ({ onChatClose, user, topics }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
@@ -23,8 +25,8 @@ const ChatWindow = ({ onCloseChat, user }) => {
     mqttClientRef.current = mqtt.connect(mqttHost, options); // Save the client instance to the ref
 
     mqttClientRef.current.on("connect", () => {
-      console.log("Connected to MQTT broker");
-      mqttClientRef.current.subscribe("melo");
+      console.log("Connected to MQTT broker", topics["subscribeTopic"]);
+      mqttClientRef.current.subscribe(topics["subscribeTopic"]);
     });
 
     mqttClientRef.current.on("message", (topic, payload) => {
@@ -39,13 +41,14 @@ const ChatWindow = ({ onCloseChat, user }) => {
     });
 
     mqttClientRef.current.on("error", (err) => {
-      // setConnectionStatus("Connection failed");
       console.error("MQTT Error:", err);
     });
 
     mqttClientRef.current.on("offline", () => {
       // setConnectionStatus("Offline");
     });
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
 
     return () => {
       mqttClientRef.current.end();
@@ -62,20 +65,35 @@ const ChatWindow = ({ onCloseChat, user }) => {
   const handleSendMessage = () => {
     if (newMessage.trim() === "") return;
 
-    console.log(newMessage);
+    console.log(newMessage, topics["publishTopic"]);
 
-    mqttClientRef.current.publish("yelo", newMessage); // Access the client instance from the ref
+    mqttClientRef.current.publish(topics["publishTopic"], newMessage); // Access the client instance from the ref
 
     setMessages((prevMessages) => [
       ...prevMessages,
-      { text: newMessage, sender: "User Name" },
+      { text: newMessage, sender: "Sender" },
     ]);
     setNewMessage("");
   };
 
+  const handleCloseChat = async () => {
+    try {
+      const response = await exitChatRoom();
+      if (response.status === 200) {
+        mqttClientRef.current.end();
+        console.log("mqtt connection terminated...");
+        onChatClose();
+      } else {
+        console.error("Disconnection failed");
+      }
+    } catch (error) {
+      console.error("Error disconnecting:", error);
+    }
+  };
+
   return (
     <div className="chat-window">
-      <button className="close-button" onClick={onCloseChat}>
+      <button className="close-button" onClick={handleCloseChat}>
         &times;
       </button>
       <div className="chat-header">{user.username}</div>
@@ -83,11 +101,8 @@ const ChatWindow = ({ onCloseChat, user }) => {
         {messages.map((message, index) => (
           <div
             key={index}
-            // className={`message ${
-            //   message.sender === user.username ? "user" : "bot"
-            // }`}
             className={`message ${
-              message.sender === "User Name" ? "user" : "bot"
+              message.sender === "Sender" ? "user" : "bot"
             }`}
           >
             {message.text}
@@ -101,7 +116,9 @@ const ChatWindow = ({ onCloseChat, user }) => {
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
         />
-        <button onClick={handleSendMessage}>Send</button>
+        <button id="sendButton" onClick={handleSendMessage}>
+          <TelegramIcon />
+        </button>
       </div>
     </div>
   );

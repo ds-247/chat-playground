@@ -1,10 +1,9 @@
-import { BrowserRouter , Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter , Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import Home from "./components/Home/Home";
 import Users from "./components/User/Users";
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
-import ChatWindow from './components/Chat Window/ChatWindow';
 
 function App() {
   return (
