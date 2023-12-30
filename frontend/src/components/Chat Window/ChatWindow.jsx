@@ -25,15 +25,11 @@ const ChatWindow = ({ onChatClose, user, topics }) => {
     mqttClientRef.current = mqtt.connect(mqttHost, options); // Save the client instance to the ref
 
     mqttClientRef.current.on("connect", () => {
-      console.log("Connected to MQTT broker", topics["subscribeTopic"]);
       mqttClientRef.current.subscribe(topics["subscribeTopic"]);
     });
 
     mqttClientRef.current.on("message", (topic, payload) => {
       const receivedMessage = payload.toString();
-      console.log(
-        `Received message -> ${receivedMessage}, topic is -> ${topic}`
-      );
       setMessages((prevMessages) => [
         ...prevMessages,
         { text: receivedMessage, sender: "bot" },
@@ -64,8 +60,6 @@ const ChatWindow = ({ onChatClose, user, topics }) => {
 
   const handleSendMessage = () => {
     if (newMessage.trim() === "") return;
-
-    console.log(newMessage, topics["publishTopic"]);
 
     mqttClientRef.current.publish(topics["publishTopic"], newMessage); // Access the client instance from the ref
 

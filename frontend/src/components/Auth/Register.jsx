@@ -55,8 +55,6 @@ const Register = () => {
         auth.loginWithJwt(res.headers["x-auth-token"]);
         window.location = "/"
       }
-      console.log(res);
-      console.log("Register:", formData);
     } catch (error) {
       console.log("error while registering the user");
     }

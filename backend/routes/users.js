@@ -15,15 +15,15 @@ router.get("/", [auth], async (req, res) => {
 router.post("/register", async (req, res) => {
   const error = await validateUser(req.body);
   if (error) return res.status(400).send(error.details[0].message);
-
+  
   let user = await User.findOne({ username: req.body.username });
   if (user) return res.status(400).send("User already existed...");
-
+  
   user = new User(_.pick(req.body, ["name", "password", "username"]));
 
-  // const plaintextPassword = req.body.password;
+  const plaintextPassword = req.body.password;
   try {
-    // user.password = await hashPassword(plaintextPassword);
+    user.password  = await hashPassword(plaintextPassword);
     await user.save();
 
     const token = user.generateAuthToken();

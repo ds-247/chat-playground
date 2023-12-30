@@ -38,7 +38,6 @@ export default function Users() {
       const response = await startChatServer(user);
       setSelectedUser(user);
       if (response.status === 200) {
-        console.log("topics received ", response.data);
         setTopics(response.data);
         setIsChatOpen(true);
       } else {

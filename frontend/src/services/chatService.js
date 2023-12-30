@@ -6,8 +6,6 @@ export async function startChatServer(user) {
     participantId: user._id,
   };
 
-  console.log(user._id);
-
   return http.post(`${apiEndPoint}/chatPermissions`, customUser);
 }
 
