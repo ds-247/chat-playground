@@ -7,23 +7,31 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
-import { getUsers } from "../../services/userService";
 import ChatWindow from "./../Chat Window/ChatWindow";
 import { startChatServer } from "../../services/chatService";
+import SearchBar from "../SearchBar/SearchBar";
+import CustomPagination from "../Pagination/Pagination";
+import { getUsers } from "../../services/userService";
 import "./user.css";
 
 export default function Users() {
-  const [userData, setUserData] = useState([]);
+  const perPageCount = 5;
+  const [topics, setTopics] = useState(null);
+  const [users, setUserData] = useState([]);
+  const [usersToRender, setUsersToRender] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [topics, setTopics] = useState(null);
+  const [activePage, setActivePage] = useState(1);
+  const pages = Math.ceil(users.length / perPageCount);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { data } = await getUsers();
 
-        setUserData(data || []);
+        setUserData(data || []); // use for pagination
+        setUsersToRender(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -31,6 +39,27 @@ export default function Users() {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const startSearch = () => {
+      const filteredItems = users.filter(u => {
+        return u.username.toLowerCase().startsWith(searchQuery.toLowerCase());
+      })
+
+      setUsersToRender(filteredItems);
+    }
+
+    startSearch();
+  }, [searchQuery])
+
+  function handleSearch(e) {
+    setSearchQuery(e.target.value);
+    setActivePage(1);
+  }
+
+  function handlePageChange(_, curpage){
+    setActivePage(curpage)
+  }
 
   const handleChatButtonClick = async (user) => {
     try {
@@ -52,8 +81,13 @@ export default function Users() {
     setIsChatOpen(false);
   };
 
+  function handleClearSearch() {
+    setSearchQuery("");
+  }
+
   return (
     <>
+      <SearchBar value={searchQuery} onSearch={handleSearch} onClearSearch={handleClearSearch}/>
       <div className="main-container">
         <TableContainer
           component={Paper}
@@ -79,7 +113,7 @@ export default function Users() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {userData.map((user, index) => (
+              {usersToRender.map((user, index) => (
                 <TableRow
                   key={user._id}
                   className="tableRow"
@@ -121,6 +155,11 @@ export default function Users() {
           />
         )}
       </div>
+      <CustomPagination
+        pages={pages}
+        onPageChange={handlePageChange}
+        activePage={activePage}
+      />
     </>
   );
 }

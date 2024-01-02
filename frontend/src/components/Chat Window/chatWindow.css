@@ -37,7 +37,7 @@
   background-color: #282634;
 }
 
-input {
+.chat-window input {
   flex: 1;
   padding: 13px;
   border: 1px solid #ccc;

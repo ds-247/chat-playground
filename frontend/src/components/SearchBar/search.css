@@ -1,0 +1,40 @@
+.search-bar {
+  display: flex;
+  justify-content: center;
+  margin: 35px 0;
+}
+
+.search-bar input {
+  color: #3a3737;
+  font-size: 16px;
+  font-weight: 400;
+  background-color: white;
+  padding: 13px 20px;
+  border: none;
+  width: 30%;
+  border-radius: 25px;
+  transition: transform 0.3s ease; 
+}
+
+.search-bar input:hover,
+.search-bar input:focus {
+  transform: scale(1.03);
+}
+
+.clear-search {
+  color: white;
+  background-color: orange;
+  padding: 10px;
+  border: none;
+  border-radius: 30px;
+  margin-left: 16px;
+  margin-top: 2px;
+  transition: transform 0.5s ease !important; 
+}
+
+.clear-search:hover {
+  cursor: pointer;
+  background-color: #ff4200;
+  transform: scale(1.15) !important; 
+}
+
