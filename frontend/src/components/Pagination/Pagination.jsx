@@ -2,7 +2,7 @@ import React from "react";
 import Pagination from "@mui/material/Pagination";
 
 export default function CustomPagination({pages, activePage, onPageChange}) {
-  return (
+  return pages === 1   ? null : (
     <div className="pagination-container">
       <Pagination
         count={pages}

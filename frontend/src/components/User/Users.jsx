@@ -12,26 +12,29 @@ import { startChatServer } from "../../services/chatService";
 import SearchBar from "../SearchBar/SearchBar";
 import CustomPagination from "../Pagination/Pagination";
 import { getUsers } from "../../services/userService";
+import paginate from "../../Utilities/paginate";
 import "./user.css";
 
 export default function Users() {
-  const perPageCount = 5;
+  const perPageCount = 3;
   const [topics, setTopics] = useState(null);
   const [users, setUserData] = useState([]);
+  const [filteredUsers, setfilteredUsers] = useState([])
   const [usersToRender, setUsersToRender] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [activePage, setActivePage] = useState(1);
-  const pages = Math.ceil(users.length / perPageCount);
+  const pages= Math.ceil(filteredUsers.length / perPageCount);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { data } = await getUsers();
 
-        setUserData(data || []); // use for pagination
-        setUsersToRender(data);
+        setUserData(data || []); 
+
+        
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -41,18 +44,24 @@ export default function Users() {
   }, []);
 
   useEffect(() => {
-    const startSearch = () => {
-      const filteredItems = users.filter(u => {
-        return u.username.toLowerCase().startsWith(searchQuery.toLowerCase());
-      })
+    const orderData = () => {
+      const filteredItems = users.filter((u) => {
+        return u.username
+          .toLowerCase()
+          .startsWith(searchQuery.toLowerCase().trim());
+      });
 
-      setUsersToRender(filteredItems);
-    }
+      setfilteredUsers(filteredItems)
+      const paginatedUsers = paginate(filteredItems, perPageCount, activePage);
+      setUsersToRender(paginatedUsers);
+    };
 
-    startSearch();
-  }, [searchQuery])
+    orderData();
+  }, [users, activePage, searchQuery]);
+
 
   function handleSearch(e) {
+    // const val = e.target.value;
     setSearchQuery(e.target.value);
     setActivePage(1);
   }
