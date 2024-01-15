@@ -76,6 +76,7 @@ export default function Users() {
       const response = await startChatServer(user);
       setSelectedUser(user);
       if (response.status === 200) {
+        setUserActive(response.data.isActive);
         setTopics(response.data);
         setIsChatOpen(true);
       } else {
@@ -96,7 +97,11 @@ export default function Users() {
 
   return (
     <>
-      <SearchBar value={searchQuery} onSearch={handleSearch} onClearSearch={handleClearSearch}/>
+      <SearchBar
+        value={searchQuery}
+        onSearch={handleSearch}
+        onClearSearch={handleClearSearch}
+      />
       <div className="main-container">
         <TableContainer
           component={Paper}
@@ -138,6 +143,7 @@ export default function Users() {
                     {index + 1}
                   </TableCell>
                   <TableCell className="tableBodyCell">
+                    <span className={user.isActive?"online":"offline"}></span>
                     {user.username}
                   </TableCell>
                   <TableCell align="right" className="tableBodyCell">

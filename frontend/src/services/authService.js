@@ -1,6 +1,6 @@
 import http from "./httpServices";
 import { jwtDecode } from "jwt-decode";
-const apiEndPoint = "http://localhost:3000";
+const apiEndPoint = "http://localhost:3000/auth";
 
 http.setJwt(getJwt());
 
@@ -21,6 +21,7 @@ export async function login(username, password) {
 }
 
 export async function logout() {
+  http.get(`${apiEndPoint}/logout`);
   localStorage.removeItem("token");
 }
 

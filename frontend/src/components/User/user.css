@@ -40,3 +40,24 @@
     display: flex;
     justify-content: center;
 }
+
+.table .online{
+  margin-right: 20px;
+    color: black;
+    background-color: green;
+    border-radius: 64px;
+    height: 15px;
+    width: 15px;
+    display: inline-block;
+}
+
+
+.table .offline{
+  margin-right: 20px;
+    color: black;
+    background-color: red;
+    border-radius: 64px;
+    height: 15px;
+    width: 15px;
+    display: inline-block;
+}

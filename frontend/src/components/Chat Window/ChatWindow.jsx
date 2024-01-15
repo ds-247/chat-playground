@@ -11,6 +11,7 @@ const ChatWindow = ({ onChatClose, user, topics }) => {
   const chatMessagesRef = useRef(null);
   const mqttClientRef = useRef(null); // Create a ref to hold the client instance
 
+
   useEffect(() => {
     const mqttHost = "wss://broker.hivemq.com:8884/mqtt";
     const username = "YOURUSERNAME";

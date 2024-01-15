@@ -27,6 +27,7 @@ userSchema.methods.generateAuthToken = function () {
     {
       _id: this._id,
       name: this.name,
+      username: this.username,
     },
     secretKey
   );
